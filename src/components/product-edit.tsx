@@ -4,10 +4,13 @@ import { IProduct } from "../interfaces/product";
 import { useEffect } from "react";
 import { useAppDispatch } from "../app/hook";
 import { fetchProduct } from "../slice/product";
+import { useEditProductMutation } from "../services/product";
+
 
 type Props = {};
 
 const ProductEdit = (props: Props) => {
+    const [editProduct, {isLoading: isUpdating}] = useEditProductMutation();
     const {
         register,
         handleSubmit,
@@ -16,13 +19,18 @@ const ProductEdit = (props: Props) => {
     } = useForm<IProduct>();
     const dispatch = useAppDispatch();
     const { id } = useParams();
-
+    
     const onSubmit: SubmitHandler<IProduct> = (data) => {
-        //
+        editProduct(data).unwrap()
+        .then(() => {
+            alert("Cập nhập thành công")
+        }).catch(() => console.log('fail'))
+        
     };
+    
     useEffect(() => {
         (async () => {
-            const { payload: product } = await dispatch(fetchProduct(id as string));
+            const { payload: product } = await dispatch(fetchProduct(id as unknown as number));
             reset(product as IProduct);
         })();
     }, [id]);
@@ -31,6 +39,7 @@ const ProductEdit = (props: Props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="text" {...register("name")} />
                 <input type="text" {...register("price")} />
+                <button>Edit</button>
             </form>
         </div>
     );

@@ -3,9 +3,8 @@ import { getProducts, getProduct } from '../api/product';
 import { IProduct } from '../interfaces/product';
 
 export const fetchProducts = createAsyncThunk("products/fetchProducts", getProducts);
-export const fetchProduct = createAsyncThunk("products/fetchProduct", async (id: string) => {
-    console.log('id', id)
-    const product = await getProduct(1);
+export const fetchProduct = createAsyncThunk("products/fetchProduct", async (id: number) => {
+    const product = await getProduct(id);
     return product;
 });
 

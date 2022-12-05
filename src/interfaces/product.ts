@@ -1,5 +1,6 @@
 export interface IProduct {
-    id?: number;
+    id?: number; // option traning
     name: string;
-    price: number
+    price: number;
+    quantity:number;
 }
